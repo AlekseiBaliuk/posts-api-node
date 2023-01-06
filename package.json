@@ -1,0 +1,27 @@
+{
+  "name": "postsapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "start:dev": "npx nodemon server",
+    "lint": "npx eslint src server.js",
+    "lint:fix": "npx eslint src --fix server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "joi": "^17.7.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.31.0",
+    "eslint-config-google": "^0.14.0",
+    "nodemon": "^2.0.20",
+    "npx": "^10.2.2"
+  }
+}
