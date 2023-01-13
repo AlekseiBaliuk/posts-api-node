@@ -1,76 +1,67 @@
-let posts = [
-  {id: '1', topic: 'test1', text: 'test test1'},
-  {id: '2', topic: 'test2', text: 'test test2'},
-  {id: '3', topic: 'test3', text: 'test test3'},
-];
 
-const getPosts = (req, res) => {
-  res.json({posts, status: 'success'});
+const {
+  getPosts,
+  getPostById,
+  addPosts,
+  changePostsById,
+  deletePostsById,
+} = require('../services/postsService');
+
+const getPostsController = async (req, res) => {
+  const posts = await getPosts();
+  res.json({posts});
 };
 
-const getPostById = (req, res) => {
+const getPostByIdController = async (req, res) => {
   const {id} = req.params;
-  const [post] = posts.filter((item) => item.id === id);
-
-  if (!post) {
-    return res
-        .status(400)
-        .json({status: `failure, no post with id ${id} found`});
-  }
+  const post = await getPostById(id);
 
   res.json({post, status: 'success'});
 };
 
-const addPost = (req, res) => {
+const addPostController = async (req, res) => {
+  const {topic, text} = req.body;
+  const post = await addPosts({topic, text});
+
+  res.json({post, status: 'success'});
+};
+
+const changePostController = async (req, res) => {
+  const {id} = req.params;
   const {topic, text} = req.body;
 
-  posts.push({
-    id: new Date().getTime().toString(),
-    topic,
-    text,
-  });
+  await changePostsById(id, {topic, text});
 
   res.json({status: 'success'});
 };
 
-const changePost = (req, res) => {
-  const {topic, text} = req.body;
+// const patchPost = (req, res) => {
+//   const {topic, text} = req.body;
 
-  posts.forEach((post) => {
-    if (post.id === req.params.id) {
-      post.topic = topic;
-      post.text = text;
-    }
-  });
-  res.json({status: 'success'});
-};
-const patchPost = (req, res) => {
-  const {topic, text} = req.body;
+//   posts.forEach((post) => {
+//     if (post.id === req.params.id) {
+//       if (topic) {
+//         post.topic = topic;
+//       }
 
-  posts.forEach((post) => {
-    if (post.id === req.params.id) {
-      if (topic) {
-        post.topic = topic;
-      }
+//       if (text) {
+//         post.text = text;
+//       }
+//     }
+//   });
+//   res.json({status: 'success'});
+// };
 
-      if (text) {
-        post.text = text;
-      }
-    }
-  });
-  res.json({status: 'success'});
-};
-
-const deletePost = (req, res) => {
-  posts = posts.filter((item) => item.id !== req.params.id);
+const deletePostController = async (req, res) => {
+  const {id} = req.params;
+  await deletePostsById(id);
   res.json({status: 'success'});
 };
 
 module.exports = {
-  getPosts,
-  getPostById,
-  addPost,
-  changePost,
-  patchPost,
-  deletePost,
+  getPostsController,
+  getPostByIdController,
+  addPostController,
+  changePostController,
+  deletePostController,
 };
