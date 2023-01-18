@@ -6,6 +6,10 @@ const postsSchema = new mongoose.Schema({
     require: true,
     unique: true,
   },
+  userId: {
+    type: String,
+    require: true,
+  },
   text: {
     type: String,
     require: true,

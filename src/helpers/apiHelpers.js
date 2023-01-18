@@ -1,4 +1,4 @@
-const {ValidationError, WrongParametersError} = require('./errors');
+const {APIError} = require('./errors');
 
 const asyncWrapper = (controller) => {
   return (req, res, next) => {
@@ -7,9 +7,8 @@ const asyncWrapper = (controller) => {
 };
 
 const errorHandler = (err, req, res, next) => {
-  if (
-    err instanceof ValidationError || err instanceof WrongParametersError) {
-    return res.status(error.status).json({message: err.message});
+  if (err instanceof APIError) {
+    return res.status(err.status).json({message: err.message});
   }
   res.status(500).json({message: err.message});
 };
