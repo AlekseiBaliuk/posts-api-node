@@ -7,8 +7,9 @@ const postsSchema = new mongoose.Schema({
     unique: true,
   },
   userId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     require: true,
+    ref: 'Users',
   },
   text: {
     type: String,
